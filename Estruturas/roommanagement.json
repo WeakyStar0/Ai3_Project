@@ -2,5 +2,9 @@
     "roomId": "string",
     "name": "string",
     "capacity": "integer",
-    "equipment": ["projector", "videoconference", "whiteboard"]
+    "equipment": [
+        "projector",
+        "videoconference",
+        "whiteboard"
+    ]
 }
