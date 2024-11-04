@@ -1,28 +1,33 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Edit Reservation",
-    "type": "object",
-    "properties": {
-      "reservationId": {
-        "type": "string",
-        "pattern": "^[a-fA-F0-9]{24}$"
-      },
-      "roomId": {
-        "type": "string",
-        "pattern": "^[a-fA-F0-9]{24}$"
-      },
-      "startTime": {
-        "type": "string",
-        "format": "date-time"
-      },
-      "endTime": {
-        "type": "string",
-        "format": "date-time"
-      },
-      "description": {
-        "type": "string",
-        "maxLength": 255
-      }
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Edit Reservation",
+  "type": "object",
+  "properties": {
+    "reservationId": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{24}$"
     },
-    "required": ["reservationId", "roomId", "startTime", "endTime"]
-  }
+    "roomId": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{24}$"
+    },
+    "startTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "endTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 255
+    }
+  },
+  "required": [
+    "reservationId",
+    "roomId",
+    "startTime",
+    "endTime"
+  ]
+}
