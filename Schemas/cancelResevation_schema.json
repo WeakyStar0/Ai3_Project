@@ -3,11 +3,12 @@
     "title": "Cancel Reservation",
     "type": "object",
     "properties": {
-      "reservationId": {
-        "type": "string",
-        "pattern": "^[a-fA-F0-9]{24}$" 
-      }
+        "reservationId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$"
+        }
     },
-    "required": ["reservationId"]
-  }
-  
+    "required": [
+        "reservationId"
+    ]
+} 
