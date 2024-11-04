@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Create Reservation",
+    "type": "object",
+    "properties": {
+        "roomId": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{24}$"
+        },
+        "startTime": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "endTime": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "description": {
+            "type": "string",
+            "maxLength": 255
+        }
+    },
+    "required": [
+        "roomId",
+        "startTime",
+        "endTime"
+    ]
+}
