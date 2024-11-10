@@ -26,10 +26,12 @@
         },
         "required": [
           "message",
-          "timestamp",
-          "roomid"
+          "timestamp"
         ]
       }
-    }
+    },
+    "required": [
+      "roomId"
+    ]
   }
 }
