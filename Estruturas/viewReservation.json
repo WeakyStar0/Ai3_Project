@@ -1,5 +1,6 @@
 {
     "roomId": "string",
     "date": "YYYY-MM-DD",
-    "userId": "string"
+    "replies": "string",
+    "userId": "string" 
 }
