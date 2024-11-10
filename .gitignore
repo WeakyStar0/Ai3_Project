@@ -1,0 +1,46 @@
+# Ignorar node_modules em client e server
+client/node_modules/
+server/node_modules/
+
+# Ignorar dependências de sistema
+.DS_Store
+.env
+
+# Ignorar arquivos de compilação
+client/build/
+server/build/
+
+# Ignorar logs
+*.log
+
+# Node.js dependencies
+node_modules/
+
+# Build output directories
+client/build/
+server/build/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# IDE or editor files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# NPM package-lock files (sometimes useful to exclude from version control)
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.swp
+*.swo
+
+# Test or coverage directories (se estiveres a usar Jest, Mocha, etc)
+coverage/
