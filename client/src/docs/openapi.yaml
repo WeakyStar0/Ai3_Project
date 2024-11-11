@@ -5,12 +5,12 @@ info:
   version: 1.0.0
   contact:
     name: Suporte API
-    email: suporte@empresa.com
+    email: suporte@empresa.fixe.com
 
 servers:
-  - url: https://api.empresa.com/v1
+  - url: https://sim.com
     description: Servidor de Produção
-  - url: https://api-staging.empresa.com/v1
+  - url: https://sim.com
     description: Servidor de Staging
 
 tags:
@@ -34,7 +34,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRegistration'
+                  $ref: '../../../Schemas/userregistration_schema.json'
       responses:
         '201':
           description: Utilizador criado com sucesso
@@ -63,7 +63,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserLogin'
+              $ref: '../../../Schemas/userLogin_schema.json'
       responses:
         '200':
           description: Login bem-sucedido
@@ -94,7 +94,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RoomManagement'
+                  $ref: '../../../Schemas/roommanagement_schema.json'
 
     post:
       tags:
@@ -107,7 +107,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomManagement'
+              $ref: '../../../Schemas/roommanagement_schema.json'
       responses:
         '201':
           description: Sala criada com sucesso
@@ -134,7 +134,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
+                $ref: '../../../Schemas/room_schema.json'
         '404':
           description: Sala não encontrada
 
@@ -156,7 +156,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RoomManagement'
+              $ref: '../../../Schemas/roommanagement_schema.json'
       responses:
         '200':
           description: Sala atualizada com sucesso
@@ -194,7 +194,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateReservation'
+              $ref: '../../../Schemas/createReservation_schema.json'
       responses:
         '201':
           description: Reserva criada com sucesso
