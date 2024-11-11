@@ -94,7 +94,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Room'
+                  $ref: '#/components/schemas/RoomManagement'
 
     post:
       tags:
@@ -210,9 +210,12 @@ components:
       properties:
         username:
           type: string
+          minLength: 3
+          maxLength: 20
           example: "johndoe"
         password:
           type: string
+          minLength: 8
           format: password
         email:
           type: string
@@ -227,9 +230,12 @@ components:
       properties:
         username:
           type: string
+          minLength: 3
+          maxLength: 20
           example: "johndoe"
         password:
           type: string
+          minLength: 8
           format: password
       required:
         - username
@@ -240,6 +246,7 @@ components:
       properties:
         roomId:
           type: string
+          pattern: "^[a-fA-F0-9]{24}$"
           example: "60db3c23f8a9c07b2f5d6d3f"
         startTime:
           type: string
@@ -251,20 +258,35 @@ components:
           example: "2024-10-25T11:00:00Z"
         description:
           type: string
+          maxLength: 255
           example: "Reunião de projeto"
       required:
         - roomId
         - startTime
         - endTime
 
+    Room:
+      type: object
+      properties:
+        roomName:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: "Sala de Conferência"
+      required:
+        - roomName
+
     RoomManagement:
       type: object
       properties:
-        name:
+        roomName:
           type: string
+          minLength: 1
+          maxLength: 100
           example: "Sala de Conferência"
         capacity:
           type: integer
+          minimum: 1
           example: 20
         equipment:
           type: array
@@ -272,24 +294,14 @@ components:
             type: string
           example: ["Projetor", "Videoconferência"]
       required:
-        - name
+        - roomName
         - capacity
 
-ErrorResponse:
-  type: object
-  properties:
-    code:
-      type: integer
-      example: 400
-    message:
-      type: string
-      example: "Dados inválidos: o campo 'email' é obrigatório."
-
-securitySchemes:
-  BearerAuth:
-    type: http
-    scheme: bearer
-    bearerFormat: JWT
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
 security:
   - BearerAuth: []
