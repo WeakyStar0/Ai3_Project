@@ -1,31 +1,32 @@
 openapi: 3.0.1
 info:
   title: Sistema de Reserva de Salas API
-  description: API para gerir reservas de salas de reunião, incluindo autenticação, criação, consulta, edição e cancelamento de reservas.
+  description: API para gerir reservas de salas de reunião, incluindo
+    autenticação, criação, consulta, edição e cancelamento de reservas.
   version: 1.0.0
   contact:
     name: Suporte API
     email: suporte@empresa.fixe.com
 
 servers:
-  - url: https://sim.com
-    description: Servidor de Produção
-  - url: https://sim.com
-    description: Servidor de Staging
+- url: https://sim.com
+  description: Servidor de Produção
+- url: https://sim.com
+  description: Servidor de Staging
 
 tags:
-  - name: Autenticação
-    description: Endpoints relacionados com a autenticação e gestão de utilizadores
-  - name: Reservas
-    description: Endpoints para criação, consulta, edição e cancelamento de reservas
-  - name: Gestão de Salas
-    description: Endpoints para a administração das salas
+- name: Autenticação
+  description: Endpoints relacionados com a autenticação e gestão de utilizadores
+- name: Reservas
+  description: Endpoints para criação, consulta, edição e cancelamento de reservas
+- name: Gestão de Salas
+  description: Endpoints para a administração das salas
 
 paths:
   /auth/register:
     post:
       tags:
-        - Autenticação
+      - Autenticação
       summary: Registar um novo utilizador
       description: Cria uma nova conta de utilizador.
       operationId: registerUser
@@ -34,7 +35,7 @@ paths:
         content:
           application/json:
             schema:
-                  $ref: '../../../Schemas/userregistration_schema.json'
+              $ref: '../../../Schemas/userregistration_schema.json'
       responses:
         '201':
           description: Utilizador criado com sucesso
@@ -54,7 +55,7 @@ paths:
   /auth/login:
     post:
       tags:
-        - Autenticação
+      - Autenticação
       summary: Login de utilizador
       description: Autentica um utilizador existente e retorna um token de acesso.
       operationId: loginUser
@@ -82,7 +83,7 @@ paths:
   /rooms:
     get:
       tags:
-        - Gestão de Salas
+      - Gestão de Salas
       summary: Listar todas as salas
       description: Retorna uma lista de todas as salas disponíveis para reserva.
       operationId: listRooms
@@ -98,7 +99,7 @@ paths:
 
     post:
       tags:
-        - Gestão de Salas
+      - Gestão de Salas
       summary: Criar uma nova sala
       description: Adiciona uma nova sala ao sistema.
       operationId: createRoom
@@ -117,17 +118,17 @@ paths:
   /rooms/{roomId}:
     get:
       tags:
-        - Gestão de Salas
+      - Gestão de Salas
       summary: Obter detalhes da sala
       description: Retorna informações detalhadas sobre uma sala específica.
       operationId: getRoomDetails
       parameters:
-        - in: path
-          name: roomId
-          schema:
-            type: string
-          required: true
-          description: ID da sala
+      - in: path
+        name: roomId
+        schema:
+          type: string
+        required: true
+        description: ID da sala
       responses:
         '200':
           description: Detalhes da sala
@@ -140,17 +141,17 @@ paths:
 
     put:
       tags:
-        - Gestão de Salas
+      - Gestão de Salas
       summary: Atualizar uma sala
       description: Atualiza informações de uma sala específica.
       operationId: updateRoom
       parameters:
-        - in: path
-          name: roomId
-          schema:
-            type: string
-          required: true
-          description: ID da sala
+      - in: path
+        name: roomId
+        schema:
+          type: string
+        required: true
+        description: ID da sala
       requestBody:
         required: true
         content:
@@ -165,17 +166,17 @@ paths:
 
     delete:
       tags:
-        - Gestão de Salas
+      - Gestão de Salas
       summary: Excluir uma sala
       description: Remove uma sala do sistema.
       operationId: deleteRoom
       parameters:
-        - in: path
-          name: roomId
-          schema:
-            type: string
-          required: true
-          description: ID da sala
+      - in: path
+        name: roomId
+        schema:
+          type: string
+        required: true
+        description: ID da sala
       responses:
         '204':
           description: Sala excluída com sucesso
@@ -185,7 +186,7 @@ paths:
   /reservations:
     post:
       tags:
-        - Reservas
+      - Reservas
       summary: Criar uma reserva
       description: Permite a criação de uma nova reserva para uma sala específica.
       operationId: createReservation
@@ -221,9 +222,9 @@ components:
           type: string
           format: email
       required:
-        - username
-        - password
-        - email
+      - username
+      - password
+      - email
 
     UserLogin:
       type: object
@@ -238,8 +239,8 @@ components:
           minLength: 8
           format: password
       required:
-        - username
-        - password
+      - username
+      - password
 
     CreateReservation:
       type: object
@@ -261,9 +262,9 @@ components:
           maxLength: 255
           example: "Reunião de projeto"
       required:
-        - roomId
-        - startTime
-        - endTime
+      - roomId
+      - startTime
+      - endTime
 
     Room:
       type: object
@@ -274,7 +275,7 @@ components:
           maxLength: 100
           example: "Sala de Conferência"
       required:
-        - roomName
+      - roomName
 
     RoomManagement:
       type: object
@@ -292,10 +293,10 @@ components:
           type: array
           items:
             type: string
-          example: ["Projetor", "Videoconferência"]
+          example: [ "Projetor", "Videoconferência" ]
       required:
-        - roomName
-        - capacity
+      - roomName
+      - capacity
 
   securitySchemes:
     BearerAuth:
@@ -304,4 +305,4 @@ components:
       bearerFormat: JWT
 
 security:
-  - BearerAuth: []
+- BearerAuth: []
