@@ -1,8 +1,7 @@
 openapi: 3.0.1
 info:
   title: Sistema de Reserva de Salas API
-  description: API para gerir reservas de salas de reunião, incluindo
-    autenticação, criação, consulta, edição e cancelamento de reservas.
+  description: API para gerir reservas de salas de reunião, incluindo autenticação, criação, consulta, edição e cancelamento de reservas.
   version: 1.0.0
   contact:
     name: Suporte API
@@ -129,6 +128,31 @@ paths:
           type: string
         required: true
         description: ID da sala
+      - in: query
+        name: includeDetails
+        schema:
+          type: boolean
+        required: false
+        description: Indica se detalhes adicionais devem ser incluídos
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum: [ "application/json" ]
+        required: true
+        description: Tipo de conteúdo aceito
+      - in: header
+        name: Cache-Control
+        schema:
+          type: string
+        required: false
+        description: Configuração de cache para a resposta
+      - in: cookie
+        name: sessionId
+        schema:
+          type: string
+        required: false
+        description: ID da sessão autenticada do usuário
       responses:
         '200':
           description: Detalhes da sala
@@ -139,70 +163,49 @@ paths:
         '404':
           description: Sala não encontrada
 
-    put:
-      tags:
-      - Gestão de Salas
-      summary: Atualizar uma sala
-      description: Atualiza informações de uma sala específica.
-      operationId: updateRoom
-      parameters:
-      - in: path
-        name: roomId
-        schema:
-          type: string
-        required: true
-        description: ID da sala
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '../../../Schemas/roommanagement_schema.json'
-      responses:
-        '200':
-          description: Sala atualizada com sucesso
-        '404':
-          description: Sala não encontrada
-
-    delete:
-      tags:
-      - Gestão de Salas
-      summary: Excluir uma sala
-      description: Remove uma sala do sistema.
-      operationId: deleteRoom
-      parameters:
-      - in: path
-        name: roomId
-        schema:
-          type: string
-        required: true
-        description: ID da sala
-      responses:
-        '204':
-          description: Sala excluída com sucesso
-        '404':
-          description: Sala não encontrada
-
   /reservations:
-    post:
+    get:
       tags:
       - Reservas
-      summary: Criar uma reserva
-      description: Permite a criação de uma nova reserva para uma sala específica.
-      operationId: createReservation
-      requestBody:
+      summary: Listar todas as reservas
+      description: Retorna uma lista de todas as reservas existentes.
+      operationId: listReservations
+      parameters:
+      - in: query
+        name: roomId
+        schema:
+          type: string
+        required: false
+        description: Filtrar reservas por ID da sala
+      - in: query
+        name: startDate
+        schema:
+          type: string
+          format: date
+        required: false
+        description: Filtrar reservas a partir de uma data específica
+      - in: header
+        name: Content-Type
+        schema:
+          type: string
+          enum: [ "application/json" ]
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '../../../Schemas/createReservation_schema.json'
+        description: Tipo de conteúdo aceito
+      - in: cookie
+        name: sessionId
+        schema:
+          type: string
+        required: false
+        description: ID da sessão autenticada do usuário
       responses:
-        '201':
-          description: Reserva criada com sucesso
-        '400':
-          description: Dados inválidos
-        '409':
-          description: Sala já reservada para o horário selecionado
+        '200':
+          description: Lista de reservas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../../../Schemas/createReservation_schema.json'
 
 components:
   schemas:
