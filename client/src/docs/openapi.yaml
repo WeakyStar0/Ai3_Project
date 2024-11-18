@@ -34,7 +34,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../../../Schemas/userregistration_schema.json'
+              $ref: '../../../Schemas/userRegistration_schema.json'
       responses:
         '201':
           description: Utilizador criado com sucesso
@@ -94,7 +94,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '../../../Schemas/roommanagement_schema.json'
+                  $ref: '../../../Schemas/roomManagement_schema.json'
 
     post:
       tags:
@@ -107,7 +107,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '../../../Schemas/roommanagement_schema.json'
+              $ref: '../../../Schemas/roomManagement_schema.json'
       responses:
         '201':
           description: Sala criada com sucesso
@@ -159,7 +159,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '../../../Schemas/roommanagement_schema.json'
+                $ref: '../../../Schemas/roomManagement_schema.json'
         '404':
           description: Sala não encontrada
 
