@@ -1,11 +1,20 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const roomsController = require("../controllers/rooms.controller");
+const roomsController = require('../controllers/rooms.controller');
 
-router.get("/", roomsController.listRooms);
-router.post("/", roomsController.createRoom);
-router.get("/:roomId", roomsController.getRoomDetails);
-router.put("/:roomId", roomsController.updateRoom);
-router.delete("/:roomId", roomsController.deleteRoom);
+// GET: Listar todos os quartos
+router.get('/', roomsController.listRooms);
+
+// POST: Criar um novo quarto
+router.post('/', roomsController.createRoom);
+
+// GET: Buscar quarto por ID
+router.get('/:id', roomsController.getRoomById);
+
+// PUT: Atualizar quarto
+router.put('/:id', roomsController.updateRoom);
+
+// DELETE: Remover quarto
+router.delete('/:id', roomsController.deleteRoom);
 
 module.exports = router;
