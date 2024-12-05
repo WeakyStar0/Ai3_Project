@@ -76,8 +76,8 @@ paths:
                     type: string
                     description: Token de acesso JWT
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-        '401':
-          description: Credenciais inválidas
+        '403':
+          description: Acesso negado por falta de permissões.
 
   /rooms:
     get:
@@ -206,6 +206,10 @@ paths:
                 type: array
                 items:
                   $ref: '../../../Schemas/createReservation_schema.json'
+        '400':
+          description: Erro na requisição
+        '401':
+          description: Autenticação inválida.
 
 components:
   schemas:
