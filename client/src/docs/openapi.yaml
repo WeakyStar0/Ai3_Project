@@ -84,6 +84,8 @@ paths:
       tags:
       - Gestão de Salas
       summary: Listar todas as salas
+      security:
+      - BearerAuth: []
       description: Retorna uma lista de todas as salas disponíveis para reserva.
       operationId: listRooms
       responses:
@@ -310,6 +312,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
-security:
-- BearerAuth: []

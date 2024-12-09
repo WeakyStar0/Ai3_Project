@@ -2,8 +2,9 @@ const { ObjectId } = require("mongodb");
 const db = require("../db");
 
 const createReservation = async (req, res) => {
-    const { userId, roomId, date } = req.body;
+    const { roomId, date } = req.body;
 
+    const userId = req.user.id;
     if (!userId || !roomId || !date) {
         return res.status(400).json({ message: "Todos os campos são obrigatórios" });
     }
