@@ -1,7 +1,10 @@
-const app = require("./app");
+const app = require('./app');
+const PORT = 3000;
+const connectDB = require('./config/database');
 
-const PORT = process.env.PORT || 3000;
+connectDB();
+
 
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
+    console.log(`Servidor a funcionar em http://localhost:${PORT}`);
+}); 

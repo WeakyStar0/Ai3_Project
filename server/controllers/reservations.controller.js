@@ -2,7 +2,7 @@ exports.listReservations = (req, res) => {
     res.status(501).json({ message: "Endpoint não implementado." });
 };
 
-exports.createReservation = (req, res) => {
+exports.createReservation = (req, res) => { 
     res.status(501).json({ message: "Endpoint não implementado." });
 };
 
