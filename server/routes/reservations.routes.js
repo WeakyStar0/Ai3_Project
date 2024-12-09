@@ -11,4 +11,4 @@ router.put("/:reservationId", reservationsController.updateReservation);
 
 router.delete("/:reservationId", reservationsController.cancelReservation);
 
-module.exports = router;
+module.exports = router; 

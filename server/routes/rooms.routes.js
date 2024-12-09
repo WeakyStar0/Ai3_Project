@@ -17,4 +17,4 @@ router.put('/:id', roomsController.updateRoom);
 // DELETE: Remover quarto
 router.delete('/:id', roomsController.deleteRoom);
 
-module.exports = router;
+module.exports = router; 

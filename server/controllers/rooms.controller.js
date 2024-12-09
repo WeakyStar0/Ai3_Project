@@ -12,7 +12,7 @@ exports.createRoom = (req, res) => {
 };
 
 exports.getRoomById = (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; 
     const room = rooms.find(r => r.id === id);
     if (!room) {
         return res.status(404).json({ message: 'Room not found' });

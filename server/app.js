@@ -15,4 +15,4 @@ app.use('/rooms', roomsRoutes);
 // Mensagem de fallback
 app.use((req, res) => res.status(404).send('Endpoint não encontrado.'));
 
-module.exports = app;
+module.exports = app; 

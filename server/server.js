@@ -7,4 +7,4 @@ connectDB();
 
 app.listen(PORT, () => {
     console.log(`Servidor a funcionar em http://localhost:${PORT}`);
-});
+}); 

@@ -8,6 +8,6 @@ router.post('/login', authController.login);
 // Exemplo de rota protegida
 router.get('/protected', authController.verifyToken, authController.checkRole('admin'), (req, res) => {
     res.json({ message: 'Acesso autorizado para administradores!' });
-});
+}); 
 
 module.exports = router;

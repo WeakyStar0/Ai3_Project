@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 // Exemplo de dados fictícios de utilizadores
 const users = [
-    { id: 1, username: 'admin', password: '$2a$10$EXAMPLEHASH', role: 'admin' },
+    { id: 1, username: 'admin', password: '$2a$10$EXAMPLEHASH', role: 'admin' }, 
     { id: 2, username: 'user', password: '$2a$10$EXAMPLEHASH', role: 'user' },
 ];
 
