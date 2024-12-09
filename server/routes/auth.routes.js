@@ -1,9 +1,13 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const authController = require("../controllers/auth.controller");
+const authController = require('../controllers/auth.controller');
 
-// endpoints de auth
-router.post("/register", authController.registerUser);
-router.post("/login", authController.loginUser);
+// Rota de login
+router.post('/login', authController.login);
+
+// Exemplo de rota protegida
+router.get('/protected', authController.verifyToken, authController.checkRole('admin'), (req, res) => {
+    res.json({ message: 'Acesso autorizado para administradores!' });
+});
 
 module.exports = router;
