@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Sistema de Reserva de Salas API
   description: API para gerir reservas de salas de reunião, incluindo autenticação, criação, consulta, edição e cancelamento de reservas.
-  version: 1.0.0
+  version: 1.1.0
   contact:
     name: Suporte API
     email: suporte@empresa.fixe.com
@@ -10,7 +10,7 @@ info:
 servers:
 - url: https://sim.com
   description: Servidor de Produção
-- url: https://sim.com
+- url: https://sim-staging.com
   description: Servidor de Staging
 
 tags:
@@ -24,28 +24,18 @@ tags:
 paths:
   /auth/register:
     post:
-      tags:
-      - Autenticação
+      tags: [ Autenticação ]
       summary: Registar um novo utilizador
-      description: Cria uma nova conta de utilizador.
       operationId: registerUser
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../../../Schemas/userRegistration_schema.json'
+              $ref: '#/components/schemas/UserRegistration'
       responses:
         '201':
           description: Utilizador criado com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Utilizador registado com sucesso."
         '400':
           description: Erro na requisição
         '409':
@@ -53,17 +43,15 @@ paths:
 
   /auth/login:
     post:
-      tags:
-      - Autenticação
+      tags: [ Autenticação ]
       summary: Login de utilizador
-      description: Autentica um utilizador existente e retorna um token de acesso.
       operationId: loginUser
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../../../Schemas/userLogin_schema.json'
+              $ref: '#/components/schemas/UserLogin'
       responses:
         '200':
           description: Login bem-sucedido
@@ -74,19 +62,50 @@ paths:
                 properties:
                   token:
                     type: string
-                    description: Token de acesso JWT
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
         '403':
-          description: Acesso negado por falta de permissões.
+          description: Acesso negado por credenciais inválidas
+
+  /auth/stats:
+    get:
+      tags: [ Autenticação ]
+      summary: Obter estatísticas do utilizador
+      security: [ { BearerAuth: [] } ]
+      operationId: getUserStats
+      responses:
+        '200':
+          description: Estatísticas do utilizador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStats'
+
+  /auth/recover-password:
+    post:
+      tags: [ Autenticação ]
+      summary: Recuperação de password
+      operationId: recoverPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: Email de recuperação enviado
+        '404':
+          description: Utilizador não encontrado
 
   /rooms:
     get:
-      tags:
-      - Gestão de Salas
+      tags: [ Gestão de Salas ]
       summary: Listar todas as salas
-      security:
-      - BearerAuth: []
-      description: Retorna uma lista de todas as salas disponíveis para reserva.
+      security: [ { BearerAuth: [] } ]
       operationId: listRooms
       responses:
         '200':
@@ -96,122 +115,44 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '../../../Schemas/roomManagement_schema.json'
+                  $ref: '#/components/schemas/RoomManagement'
 
     post:
-      tags:
-      - Gestão de Salas
+      tags: [ Gestão de Salas ]
       summary: Criar uma nova sala
-      description: Adiciona uma nova sala ao sistema.
+      security: [ { BearerAuth: [] } ]
       operationId: createRoom
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '../../../Schemas/roomManagement_schema.json'
+              $ref: '#/components/schemas/RoomManagement'
       responses:
         '201':
           description: Sala criada com sucesso
-        '400':
-          description: Dados inválidos
-
-  /rooms/{roomId}:
-    get:
-      tags:
-      - Gestão de Salas
-      summary: Obter detalhes da sala
-      description: Retorna informações detalhadas sobre uma sala específica.
-      operationId: getRoomDetails
-      parameters:
-      - in: path
-        name: roomId
-        schema:
-          type: string
-        required: true
-        description: ID da sala
-      - in: query
-        name: includeDetails
-        schema:
-          type: boolean
-        required: false
-        description: Indica se detalhes adicionais devem ser incluídos
-      - in: header
-        name: Content-Type
-        schema:
-          type: string
-          enum: [ "application/json" ]
-        required: true
-        description: Tipo de conteúdo aceito
-      - in: header
-        name: Cache-Control
-        schema:
-          type: string
-        required: false
-        description: Configuração de cache para a resposta
-      - in: cookie
-        name: sessionId
-        schema:
-          type: string
-        required: false
-        description: ID da sessão autenticada do usuário
-      responses:
-        '200':
-          description: Detalhes da sala
-          content:
-            application/json:
-              schema:
-                $ref: '../../../Schemas/roomManagement_schema.json'
-        '404':
-          description: Sala não encontrada
+        '409':
+          description: Sala já existe
 
   /reservations:
-    get:
-      tags:
-      - Reservas
-      summary: Listar todas as reservas
-      description: Retorna uma lista de todas as reservas existentes.
-      operationId: listReservations
-      parameters:
-      - in: query
-        name: roomId
-        schema:
-          type: string
-        required: false
-        description: Filtrar reservas por ID da sala
-      - in: query
-        name: startDate
-        schema:
-          type: string
-          format: date
-        required: false
-        description: Filtrar reservas a partir de uma data específica
-      - in: header
-        name: Content-Type
-        schema:
-          type: string
-          enum: [ "application/json" ]
+    post:
+      tags: [ Reservas ]
+      summary: Criar uma reserva
+      security: [ { BearerAuth: [] } ]
+      operationId: createReservation
+      requestBody:
         required: true
-        description: Tipo de conteúdo aceito
-      - in: cookie
-        name: sessionId
-        schema:
-          type: string
-        required: false
-        description: ID da sessão autenticada do usuário
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReservation'
       responses:
-        '200':
-          description: Lista de reservas
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '../../../Schemas/createReservation_schema.json'
+        '201':
+          description: Reserva criada com sucesso
         '400':
-          description: Erro na requisição
-        '401':
-          description: Autenticação inválida.
+          description: Dados inválidos
+        '409':
+          description: Conflito de horário
 
 components:
   schemas:
@@ -222,90 +163,65 @@ components:
           type: string
           minLength: 3
           maxLength: 20
-          example: "johndoe"
         password:
           type: string
           minLength: 8
-          format: password
         email:
           type: string
           format: email
-      required:
-      - username
-      - password
-      - email
+      required: [ username, password, email ]
 
     UserLogin:
       type: object
       properties:
         username:
           type: string
-          minLength: 3
-          maxLength: 20
-          example: "johndoe"
         password:
           type: string
-          minLength: 8
-          format: password
-      required:
-      - username
-      - password
+      required: [ username, password ]
 
-    CreateReservation:
+    UserStats:
       type: object
       properties:
-        roomId:
-          type: string
-          pattern: "^[a-fA-F0-9]{24}$"
-          example: "60db3c23f8a9c07b2f5d6d3f"
-        startTime:
-          type: string
-          format: date-time
-          example: "2024-10-25T10:00:00Z"
-        endTime:
-          type: string
-          format: date-time
-          example: "2024-10-25T11:00:00Z"
-        description:
-          type: string
-          maxLength: 255
-          example: "Reunião de projeto"
-      required:
-      - roomId
-      - startTime
-      - endTime
-
-    Room:
-      type: object
-      properties:
-        roomName:
-          type: string
-          minLength: 1
-          maxLength: 100
-          example: "Sala de Conferência"
-      required:
-      - roomName
+        totalReservations:
+          type: integer
+          example: 12
+        upcomingReservations:
+          type: integer
+          example: 3
+        totalHoursBooked:
+          type: number
+          example: 45.5
 
     RoomManagement:
       type: object
       properties:
         roomName:
           type: string
-          minLength: 1
-          maxLength: 100
-          example: "Sala de Conferência"
         capacity:
           type: integer
-          minimum: 1
-          example: 20
         equipment:
           type: array
           items:
             type: string
-          example: [ "Projetor", "Videoconferência" ]
-      required:
-      - roomName
-      - capacity
+      required: [ roomName, capacity ]
+
+    CreateReservation:
+      type: object
+      properties:
+        roomId:
+          type: string
+        userId:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        description:
+          type: string
+      required: [ roomId, userId, startTime, endTime ]
 
   securitySchemes:
     BearerAuth:
