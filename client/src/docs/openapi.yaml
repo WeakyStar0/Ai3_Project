@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Sistema de Reserva de Salas API
   description: API para gerir reservas de salas de reunião, incluindo autenticação, criação, consulta, edição e cancelamento de reservas.
-  version: 1.1.0
+  version: 1.2.0
   contact:
     name: Suporte API
     email: suporte@empresa.fixe.com
