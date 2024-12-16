@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
   title: Sistema de Reserva de Salas API
-  description: API para gerir reservas de salas de reunião, incluindo autenticação, criação, consulta, edição e cancelamento de reservas.
-  version: 1.2.0
+  description: API para gerir reservas de salas, incluindo autenticação, criação, consulta, edição e cancelamento de reservas.
+  version: 1.3.0
   contact:
     name: Suporte API
     email: suporte@empresa.fixe.com
@@ -64,21 +64,7 @@ paths:
                     type: string
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
         '403':
-          description: Acesso negado por credenciais inválidas
-
-  /auth/stats:
-    get:
-      tags: [ Autenticação ]
-      summary: Obter estatísticas do utilizador
-      security: [ { BearerAuth: [] } ]
-      operationId: getUserStats
-      responses:
-        '200':
-          description: Estatísticas do utilizador
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserStats'
+          description: Credenciais inválidas
 
   /auth/recover-password:
     post:
@@ -90,11 +76,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
+              $ref: '#/components/schemas/PasswordRecovery'
       responses:
         '200':
           description: Email de recuperação enviado
@@ -105,8 +87,8 @@ paths:
     get:
       tags: [ Gestão de Salas ]
       summary: Listar todas as salas
-      security: [ { BearerAuth: [] } ]
       operationId: listRooms
+      security: [ { BearerAuth: [] } ]
       responses:
         '200':
           description: Lista de salas disponíveis
@@ -120,8 +102,8 @@ paths:
     post:
       tags: [ Gestão de Salas ]
       summary: Criar uma nova sala
-      security: [ { BearerAuth: [] } ]
       operationId: createRoom
+      security: [ { BearerAuth: [] } ]
       requestBody:
         required: true
         content:
@@ -137,9 +119,9 @@ paths:
   /reservations:
     post:
       tags: [ Reservas ]
-      summary: Criar uma reserva
-      security: [ { BearerAuth: [] } ]
+      summary: Criar uma nova reserva
       operationId: createReservation
+      security: [ { BearerAuth: [] } ]
       requestBody:
         required: true
         content:
@@ -153,6 +135,63 @@ paths:
           description: Dados inválidos
         '409':
           description: Conflito de horário
+
+    put:
+      tags: [ Reservas ]
+      summary: Editar uma reserva existente
+      operationId: editReservation
+      security: [ { BearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditReservation'
+      responses:
+        '200':
+          description: Reserva atualizada com sucesso
+        '404':
+          description: Reserva não encontrada
+
+    delete:
+      tags: [ Reservas ]
+      summary: Cancelar uma reserva
+      operationId: cancelReservation
+      security: [ { BearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelReservation'
+      responses:
+        '200':
+          description: Reserva cancelada com sucesso
+        '404':
+          description: Reserva não encontrada
+
+  /reservations/{reservationId}:
+    get:
+      tags: [ Reservas ]
+      summary: Consultar detalhes de uma reserva
+      operationId: getReservationDetails
+      security: [ { BearerAuth: [] } ]
+      parameters:
+      - name: reservationId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: '^[a-fA-F0-9]{24}$'
+      responses:
+        '200':
+          description: Detalhes da reserva
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReservation'
+        '404':
+          description: Reserva não encontrada
 
 components:
   schemas:
@@ -180,26 +219,24 @@ components:
           type: string
       required: [ username, password ]
 
-    UserStats:
+    PasswordRecovery:
       type: object
       properties:
-        totalReservations:
-          type: integer
-          example: 12
-        upcomingReservations:
-          type: integer
-          example: 3
-        totalHoursBooked:
-          type: number
-          example: 45.5
+        email:
+          type: string
+          format: email
+      required: [ email ]
 
     RoomManagement:
       type: object
       properties:
         roomName:
           type: string
+          minLength: 1
+          maxLength: 100
         capacity:
           type: integer
+          minimum: 1
         equipment:
           type: array
           items:
@@ -211,8 +248,7 @@ components:
       properties:
         roomId:
           type: string
-        userId:
-          type: string
+          pattern: '^[a-fA-F0-9]{24}$'
         startTime:
           type: string
           format: date-time
@@ -221,7 +257,36 @@ components:
           format: date-time
         description:
           type: string
-      required: [ roomId, userId, startTime, endTime ]
+          maxLength: 255
+      required: [ roomId, startTime, endTime ]
+
+    EditReservation:
+      type: object
+      properties:
+        reservationId:
+          type: string
+          pattern: '^[a-fA-F0-9]{24}$'
+        roomId:
+          type: string
+          pattern: '^[a-fA-F0-9]{24}$'
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        description:
+          type: string
+          maxLength: 255
+      required: [ reservationId, roomId, startTime, endTime ]
+
+    CancelReservation:
+      type: object
+      properties:
+        reservationId:
+          type: string
+          pattern: '^[a-fA-F0-9]{24}$'
+      required: [ reservationId ]
 
   securitySchemes:
     BearerAuth:
